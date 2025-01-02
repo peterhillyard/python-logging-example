@@ -3,15 +3,21 @@ from logging_config import LOGGING_CONFIG
 import logging
 import logging.config
 import logging.handlers
+from logging_config import IS_PYTHON_3_12
 
 logger = logging.getLogger("example_app")
 
 def setup_logging() -> None:
     logging.config.dictConfig(LOGGING_CONFIG)
+
+    if not IS_PYTHON_3_12:
+        return
+
     queue_handler = logging.getHandlerByName("queue_handler")
     if queue_handler is not None:
         queue_handler.listener.start()
         atexit.register(queue_handler.listener.stop)
+
 
 def main() -> None:
     for i in range(10):

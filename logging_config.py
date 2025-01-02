@@ -3,6 +3,7 @@ import pathlib
 
 APP_NAME = "example_app"
 LOGGING_DIR = pathlib.Path("/tmp") # or some other location
+IS_PYTHON_3_12 = False
 
 
 LOGGING_CONFIG = {
@@ -50,7 +51,6 @@ LOGGING_CONFIG = {
             "formatter": "simple",
             "stream": "ext://sys.stdout",
         },
-        # Use this queue handler below if using Python 3.12
         "queue_handler": {
             "class": "logging.handlers.QueueHandler", 
             "handlers": [
@@ -59,17 +59,17 @@ LOGGING_CONFIG = {
                 "h_stdout",
             ],
             "respect_handler_level": True,
+        } if IS_PYTHON_3_12 else
+        {
+            "class": "logger_utils.QueueListenerHandler", 
+            "handlers": [
+                "cfg://handlers.h_file",
+                "cfg://handlers.h_stderr",
+                "cfg://handlers.h_stdout",
+            ],
+            "respect_handler_level": True,
+            "auto_run": True,
         },
-        # # Use this queue handler below if using Python <3.12
-        # "queue_handler": {
-        #     "class": "logger_utils.QueueListenerHandler", 
-        #     "handlers": [
-        #         "h_file",
-        #         "h_stderr",
-        #         "h_stdout",
-        #     ],
-        #     "respect_handler_level": True,
-        # },
     },
     "loggers": {"root": {"level": "DEBUG", "handlers": ["queue_handler"]}},
 }

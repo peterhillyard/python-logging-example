@@ -102,9 +102,8 @@ class QueueListenerHandler(logging.handlers.QueueHandler):
         return super().emit(record)
 
     def _resolve_handlers(self, handlers: ConvertingList) -> List[logging.Handler]:
-        print(type(handlers[0]))
-        # if not isinstance(handlers, ConvertingList):
-        #     return handlers
+        if not isinstance(handlers, ConvertingList):
+            return handlers
 
         # Indexing the list performs the evaluation.
         return [handlers[i] for i in range(len(handlers))]
