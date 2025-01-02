@@ -50,19 +50,9 @@ LOGGING_CONFIG = {
             "formatter": "simple",
             "stream": "ext://sys.stdout",
         },
-        # # Use this queue handler below if using Python 3.12
-        # "queue_handler": {
-        #     "class": "logging.handlers.QueueHandler", 
-        #     "handlers": [
-        #         "h_file",
-        #         "h_stderr",
-        #         "h_stdout",
-        #     ],
-        #     "respect_handler_level": True,
-        # },
-        # Use this queue handler below if using Python <3.12
+        # Use this queue handler below if using Python 3.12
         "queue_handler": {
-            "class": "logger_utils.QueueListenerHandler", 
+            "class": "logging.handlers.QueueHandler", 
             "handlers": [
                 "h_file",
                 "h_stderr",
@@ -70,6 +60,16 @@ LOGGING_CONFIG = {
             ],
             "respect_handler_level": True,
         },
+        # # Use this queue handler below if using Python <3.12
+        # "queue_handler": {
+        #     "class": "logger_utils.QueueListenerHandler", 
+        #     "handlers": [
+        #         "h_file",
+        #         "h_stderr",
+        #         "h_stdout",
+        #     ],
+        #     "respect_handler_level": True,
+        # },
     },
     "loggers": {"root": {"level": "DEBUG", "handlers": ["queue_handler"]}},
 }
